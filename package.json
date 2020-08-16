@@ -1,7 +1,7 @@
 {
   "name": "react-redux-partial",
   "version": "0.0.1",
-  "description": "",
+  "description": "Library to improve performance when you have many components connected to different part of the store. Also it helps to create connected components which are independent of shape of root redux store.",
   "main": "dist/index.js",
   "module": "dist-es/index.js",
   "types": "dist/index.d.ts",
