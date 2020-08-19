@@ -17,39 +17,39 @@ const reducer = (state: ITestState, _: AnyAction) => state;
 
 const store = createStore(reducer);
 
-const { Context } = createConnects<ITestState>();
+const { context } = createConnects<ITestState>();
 
 const StubComponent = (props: { text: string }) => <span>{props.text}</span>;
 
 export function passStore() {
-	const { withPartialStoreProvider } = createConnects<ITestState>();
+	const { withProvider } = createConnects<ITestState>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectType<JSX.Element>(<Component store={store} text="text" />);
 }
 
 export function parentContextAsKey() {
-	const { withPartialStoreProvider } = createConnects<{ value: string }>();
+	const { withProvider } = createConnects<{ value: string }>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectType<JSX.Element>(
-		<Component context={Context} fields="f1" text="sdf" />
+		<Component context={context} fields="f1" text="sdf" />
 	);
 }
 
 export function parentContextAsKeyWithSelect() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		value: number;
 		value2: number;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectType<JSX.Element>(
 		<Component
-			context={Context}
+			context={context}
 			fields="f4"
 			text="sdf"
 			select={(s) => s.v2}
@@ -58,16 +58,16 @@ export function parentContextAsKeyWithSelect() {
 }
 
 export function parentContextAsConfig() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: { value: string };
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectType<JSX.Element>(
 		<Component
-			context={Context}
+			context={context}
 			fields={{ f1: true, f2: true }}
 			text="sdf"
 		/>
@@ -75,16 +75,16 @@ export function parentContextAsConfig() {
 }
 
 export function parentContextAsConfigWithSelect() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: string;
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectType<JSX.Element>(
 		<Component
-			context={Context}
+			context={context}
 			fields={{ f1: true, f2: true }}
 			select={(s) => ({ f1: s.f1.value, f2: s.f2 })}
 			text="sdf"
@@ -93,47 +93,47 @@ export function parentContextAsConfigWithSelect() {
 }
 
 export function parentPartialContext() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: { value: string };
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
-	expectType<JSX.Element>(<Component context={Context} text="fsdf" />);
+	expectType<JSX.Element>(<Component context={context} text="fsdf" />);
 }
 
 export function parentContext() {
-	const { withPartialStoreProvider } = createConnects<ITestState>();
+	const { withProvider } = createConnects<ITestState>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
-	expectType<JSX.Element>(<Component context={Context} text="fsdf" />);
+	expectType<JSX.Element>(<Component context={context} text="fsdf" />);
 }
 
-export function parentPartialContextWithSelect() {
-	const { withPartialStoreProvider } = createConnects<{
-		f1: string;
-		f2: string;
-	}>();
+// export function parentPartialContextWithSelect() {
+// 	const { withPartialStoreProvider } = createConnects<{
+// 		f1: string;
+// 		f2: string;
+// 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+// 	const Component = withPartialStoreProvider(StubComponent);
 
-	expectType<JSX.Element>(
-		<Component
-			context={Context}
-			select={(s) => ({ f1: s.f1.value, f2: s.f2 })}
-			text="fsdf"
-		/>
-	);
-}
+// 	expectType<JSX.Element>(
+// 		<Component
+// 			context={context}
+// 			select={(s) => ({ f1: s.f1.value, f2: s.f2 })}
+// 			text="fsdf"
+// 		/>
+// 	);
+// }
 
 // Errors
 
 export function passWrongStore() {
-	const { withPartialStoreProvider } = createConnects<ITestState>();
+	const { withProvider } = createConnects<ITestState>();
 
-	const Component = withPartialStoreProvider((props: { text: string }) => (
+	const Component = withProvider((props: { text: string }) => (
 		<span>{props.text}</span>
 	));
 
@@ -141,9 +141,9 @@ export function passWrongStore() {
 }
 
 export function passWrongProps() {
-	const { withPartialStoreProvider } = createConnects<ITestState>();
+	const { withProvider } = createConnects<ITestState>();
 
-	const Component = withPartialStoreProvider((props: { text: string }) => (
+	const Component = withProvider((props: { text: string }) => (
 		<span>{props.text}</span>
 	));
 
@@ -155,9 +155,9 @@ export function wrongTypeOfState() {
 
 	const store = createStore(reducer);
 
-	const { withPartialStoreProvider } = createConnects<ITestState>();
+	const { withProvider } = createConnects<ITestState>();
 
-	const Component = withPartialStoreProvider((props: { text: string }) => (
+	const Component = withProvider((props: { text: string }) => (
 		<span>{props.text}</span>
 	));
 
@@ -165,28 +165,27 @@ export function wrongTypeOfState() {
 }
 
 export function wrongParentContextAsKey() {
-	const { withPartialStoreProvider } = createConnects<{ value: string }>();
+	const { withProvider } = createConnects<{ value: string }>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
-	expectError(<Component context={Context} fields="f1" />);
+	expectError(<Component context={context} fields="f1" />);
 
-	/** @todo разобраться, почему нет ошибки */
-	// expectError(<Component context={Context} fields="f2" text="sdf" />);
-	expectError(<Component context={Context} fields="f3" text="sdf" />);
+	expectError(<Component context={context} fields="f2" text="sdf" />);
+	expectError(<Component context={context} fields="f3" text="sdf" />);
 }
 
 export function wrongParentContextAsKeyWithSelect() {
-	const { withPartialStoreProvider } = createConnects<{ value: number }>();
+	const { withProvider } = createConnects<{ value: number }>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectError(
-		<Component context={Context} fields="f4" select={(s) => s.v1} text="" />
+		<Component context={context} fields="f4" select={(s) => s.v1} text="" />
 	);
 	expectError(
 		<Component
-			context={Context}
+			context={context}
 			fields="f4"
 			select={(s: ITestState['f4']) => s.v2}
 		/>
@@ -194,32 +193,32 @@ export function wrongParentContextAsKeyWithSelect() {
 }
 
 export function wrongParentContextAsConfig() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: { value: string };
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectError(
-		<Component context={Context} fields={{ f1: true, f3: true }} text="" />
+		<Component context={context} fields={{ f1: true, f3: true }} text="" />
 	);
 	expectError(
-		<Component context={Context} fields={{ f1: true, f2: true }} />
+		<Component context={context} fields={{ f1: true, f2: true }} />
 	);
 }
 
 export function wrongParentContextAsConfigWithSelect() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: string;
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectError(
 		<Component
-			context={Context}
+			context={context}
 			fields={{ f1: true, f2: true }}
 			select={(s) => ({ f1: s.f1, f2: s.f2 })}
 			text=""
@@ -227,7 +226,7 @@ export function wrongParentContextAsConfigWithSelect() {
 	);
 	expectError(
 		<Component
-			context={Context}
+			context={context}
 			fields={{ f1: true, f2: true }}
 			select={(s: Pick<ITestState, 'f1' | 'f2'>) => ({
 				f1: s.f1.value,
@@ -238,46 +237,46 @@ export function wrongParentContextAsConfigWithSelect() {
 }
 
 export function wrongParentPartialContext() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: { value: number };
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
-	expectError(<Component context={Context} text="" />);
+	expectError(<Component context={context} text="" />);
 }
 
 export function wrongParentPartialContextWithoutProp() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: { value: string };
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
-	expectError(<Component context={Context} />);
+	expectError(<Component context={context} />);
 }
 
 export function wrongParentPartialContextWithSelect() {
-	const { withPartialStoreProvider } = createConnects<{
+	const { withProvider } = createConnects<{
 		f1: number;
 		f2: string;
 	}>();
 
-	const Component = withPartialStoreProvider(StubComponent);
+	const Component = withProvider(StubComponent);
 
 	expectError(
 		<Component
-			context={Context}
-			select={(s) => ({ f1: s.f1.value, f2: s.f2 })}
+			context={context}
+			select={(s: ITestState) => ({ f1: s.f1.value, f2: s.f2 })}
 			text=""
 		/>
 	);
 
 	expectError(
 		<Component
-			context={Context}
+			context={context}
 			select={(s: ITestState) => ({ f1: Number(s.f1.value), f2: s.f2 })}
 			text={123}
 		/>
