@@ -214,9 +214,6 @@ export function createConnects<S>() {
 	/**
 	 * HOCs
 	 * Connect to partial store
-	 *
-	 * @todo fix type when the PR will be merged
-	 * https://github.com/DefinitelyTyped/DefinitelyTyped/pull/46778
 	 */
 	const connect = ((
 		mapStateToProps: any,
@@ -227,7 +224,7 @@ export function createConnects<S>() {
 		baseConnect(mapStateToProps, mapDispatchToProps, mergeProps, {
 			...options,
 			context: partialStoreContext,
-		})) as Connect;
+		})) as Connect<S>;
 
 	const withProvider: WithPartialStoreProvider<S> = (
 		Component: React.ComponentType<any>
