@@ -29,8 +29,8 @@
   },
   "peerDependencies": {
     "redux": "^4.0.0",
-    "react": "^16.8.0",
-    "react-redux": "^7.0.0"
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0",
+    "react-redux": "^7.0.0 || ^8.0.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",

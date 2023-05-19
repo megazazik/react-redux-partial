@@ -23,6 +23,7 @@ import {
 	PartialStore,
 	FieldConfig,
 	PartialState,
+	StoreWithGetPartial,
 } from 'redux-partial';
 
 export type TypeGuard<K, Current, Expected> = Current extends Expected
@@ -124,7 +125,7 @@ export type WithPartialStoreProvider<S> = <P>(
 
 export function createConnects<S>() {
 	const partialStoreContext = createContext<ReactReduxContextValue<S>>(
-		(null as unknown) as ReactReduxContextValue<S>
+		null as unknown as ReactReduxContextValue<S>
 	);
 
 	/**
@@ -181,10 +182,10 @@ export function createConnects<S>() {
 
 		const parentStoreWithPartial = React.useMemo(() => {
 			if (
-				((parentStore as unknown) as Partial<PartialStore<any, any>>)
+				(parentStore as unknown as Partial<PartialStore<any, any>>)
 					.getPartial
 			) {
-				return (parentStore as unknown) as PartialStore<any, any>;
+				return parentStore as unknown as PartialStore<any, any>;
 			}
 
 			return makePartial(parentStore);
@@ -226,18 +227,18 @@ export function createConnects<S>() {
 			context: partialStoreContext,
 		})) as Connect<S>;
 
-	const withProvider: WithPartialStoreProvider<S> = (
-		Component: React.ComponentType<any>
-	) => ({ store, context, fields, select, ...rest }: any) =>
-		store ? (
-			<Provider store={store}>
-				<Component {...rest} />
-			</Provider>
-		) : (
-			<Provider context={context} fields={fields} select={select}>
-				<Component {...rest} />
-			</Provider>
-		);
+	const withProvider: WithPartialStoreProvider<S> =
+		(Component: React.ComponentType<any>) =>
+		({ store, context, fields, select, ...rest }: any) =>
+			store ? (
+				<Provider store={store}>
+					<Component {...rest} />
+				</Provider>
+			) : (
+				<Provider context={context} fields={fields} select={select}>
+					<Component {...rest} />
+				</Provider>
+			);
 
 	/** Hooks */
 
@@ -312,7 +313,10 @@ export const OverrideStoreProvider: OverrideProvider = ({
 	);
 
 	const partialStore = useMemo(() => {
-		return withPartialStore.getPartial(fields, { select });
+		return (withPartialStore as StoreWithGetPartial<Store>).getPartial(
+			fields,
+			{ select }
+		);
 	}, [withPartialStore, fields, select || null]);
 
 	return <BaseProvider store={partialStore as any}>{children}</BaseProvider>;
