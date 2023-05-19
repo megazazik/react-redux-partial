@@ -1,3 +1,12 @@
+# [0.2.0](https://github.com/megazazik/react-redux-partial/compare/v0.1.1...v0.2.0) (2023-05-19)
+
+
+### Features
+
+* update peer deps ([655846b](https://github.com/megazazik/react-redux-partial/commit/655846bf4d788c53533ac64f5fb04066e6c1ece3))
+
+
+
 ## [0.1.1](https://github.com/megazazik/react-redux-partial/compare/v0.1.0...v0.1.1) (2020-11-06)
 
 
